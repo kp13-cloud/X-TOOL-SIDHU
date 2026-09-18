@@ -1,124 +1,211 @@
-# DarkFly-Tool
+X-TOOL-SIDHU
 
-The current main version is **DarkFly v5** – a modern Python 3 CLI that runs on current Linux/Termux systems. The previous **DarkFly v4.0** (Python 2, Termux-focused) installer is still included below as a legacy option.
+A modern Python 3 command-line tool for organizing, discovering, and viewing information about security and system tools.
 
-In its original (v4) form, DarkFly-Tool is an installation tool for installing tools. this tool makes it easy for you. so you don't need to type git clone or look for the github repository. You only have to choose the number. which tool you want to install. there are 530 tools ready for intall. and for those of you who like to have fun. there are 7 SMS spam tools that are ready to use, you just need to choose spam to use the target number. there is a tocopedia DLL.
+X-TOOL-SIDHU provides a simple CLI with tool categories, descriptions, installation suggestions, and an interactive menu.
 
-## Version comparison
+Features
 
-| Feature                                      | DarkFly v5 (current) | DarkFly v4.0 (legacy) |
-| -------------------------------------------- | -------------------- | ---------------------- |
-| Python 3 support                             | ✓                    | ✗                      |
-| Python 2 support                             | ✗                    | ✓                      |
-| Target: Linux                                | ✓                    | ✗ (not reliable)       |
-| Target: Termux                               | ✓                    | ✓                      |
-| Actively maintained                          | ✓                    | ✗ (frozen legacy)      |
-| Configurable tools via `darkfly_tools.json`  | ✓                    | ✗                      |
-| Obfuscated/installer-based tool management   | ✗                    | ✓                      |
+- Python 3.10+ CLI
+- Termux/Android support
+- Linux support
+- Tool listing by category
+- Tool information and descriptions
+- Platform-aware installation suggestions
+- Interactive terminal menu
+- JSON-based tool configuration
+- Lightweight project structure
 
-### Detailed comparison
+Requirements
 
-| Aspect              | DarkFly v5 (current)                                           | DarkFly v4.0 (legacy)                                                |
-| ------------------- | -------------------------------------------------------------- | -------------------------------------------------------------------- |
-| Implementation      | Python 3 CLI in `darkfly/`                                     | Python 2 installer `install.py` plus `.module` and `lib` scripts     |
-| Target environments | Linux and Termux with Python 3.10+ and pip                     | Primarily Termux (Android); regular Linux may not work reliably      |
-| Status              | Active / modern path                                           | Frozen legacy path, kept for historical compatibility                |
-| Install / usage     | `python -m pip install -e .[dev]` then `DarkFly5 ...`          | `python2 install.py` then `DarkFly`                                  |
-| Tool list           | Config-driven via `darkfly_tools.json` (easy to extend/modify) | Hard-coded/obfuscated inside legacy Python 2 and `.module` artifacts |
+- Python 3.10 or newer
+- Linux or Termux
+- Git
 
----
+Check your Python version:
 
-## DarkFly v5 – modern Python 3 CLI (Linux / Termux)
+python3 --version
 
-DarkFly v5 is a new, configurable CLI that does **not** depend on the old Python 2 installer. It is implemented as a normal Python package in the `darkfly/` directory.
+Installation
 
-### Install (editable) for development
+Clone the repository:
 
-From a Python 3.10+ environment on Linux (or Termux with Python 3):
+git clone https://github.com/kp13-cloud/X-TOOL-SIDHU.git
 
-```bash
-python -m pip install --upgrade pip
-python -m pip install -e .[dev]
-```
+Enter the project directory:
 
-This installs the `DarkFly5` command and development dependencies (like pytest).
+cd X-TOOL-SIDHU
 
-### Usage
+Usage
 
-List available tools (from `darkfly_tools.json` or the built-in examples):
+Show help
 
-```bash
+python3 -m darkfly.cli --help
+
+List available tools
+
+python3 -m darkfly.cli list
+
+This displays the tools currently defined in:
+
+darkfly_tools.json
+
+Show information about a tool
+
+First list the available tools:
+
+python3 -m darkfly.cli list
+
+Then use the tool ID:
+
+python3 -m darkfly.cli info <tool_id>
+
+Example:
+
+python3 -m darkfly.cli info nmap
+
+The "info" command can display:
+
+- Tool ID
+- Tool name
+- Category
+- Description
+- Recommended installation commands
+- Alternative installation commands
+
+The CLI detects whether it is running under Termux or Linux and selects appropriate installation suggestions when they are available.
+
+Interactive menu
+
+Run:
+
+python3 -m darkfly.cli menu
+
+The menu allows you to select a tool by number and view its information.
+
+Enter:
+
+q
+
+to quit the menu.
+
+Configuration
+
+Tools are defined in:
+
+darkfly_tools.json
+
+The configuration is organized into categories.
+
+A tool can contain:
+
+- "id"
+- "name"
+- "description"
+- "category"
+- "install_commands"
+
+Example structure:
+
+{
+  "categories": [
+    {
+      "id": "examples",
+      "name": "Example Tools",
+      "tools": [
+        {
+          "id": "example",
+          "name": "Example Tool",
+          "description": "Example tool description.",
+          "install_commands": [
+            "sudo apt install example",
+            "pkg install example"
+          ]
+        }
+      ]
+    }
+  ]
+}
+
+Project Structure
+
+X-TOOL-SIDHU/
+├── darkfly/
+│   ├── __init__.py
+│   └── cli.py
+├── darkfly_tools.json
+├── install.py
+├── lib/
+├── .module/
+├── tests/
+├── pyproject.toml
+├── LICENSE
+└── README.md
+
+Main Commands
+
+Command| Purpose
+"python3 -m darkfly.cli --help"| Show help
+"python3 -m darkfly.cli list"| List available tools
+"python3 -m darkfly.cli info <tool_id>"| Show tool information
+"python3 -m darkfly.cli menu"| Open interactive menu
+
+Python Package Installation
+
+The project also provides a Python package configuration through "pyproject.toml".
+
+For a local editable installation:
+
+python3 -m pip install -e .
+
+After installation, the configured CLI entry point is:
+
+DarkFly5
+
+You can then use:
+
+DarkFly5 --help
+
 DarkFly5 list
-```
 
-Show details and suggested install commands for a specific tool:
+DarkFly5 info <tool_id>
 
-```bash
-DarkFly5 info nmap
-```
-
-Open a simple interactive menu:
-
-```bash
 DarkFly5 menu
-```
 
-You can add or change tools and categories by editing `darkfly_tools.json` in the repository root. The JSON structure is simple and designed to be extended over time.
+Development
 
-### Running tests (modern CLI)
+Install development dependencies:
 
-After installing with the `dev` extras:
+python3 -m pip install -e ".[dev]"
 
-```bash
+Run the test suite:
+
 pytest
-```
 
-This runs the tests under `tests/` for the modern Python 3 CLI.
+Security and Responsible Use
 
----
+X-TOOL-SIDHU is intended for security education, research, system administration, and authorized testing.
 
-## DarkFly v4 – legacy Python 2 installer (Termux)
+Only use security-related tools against systems, networks, applications, or devices that you own or have explicit permission to test.
 
-> **Warning:** DarkFly v4 depends on Python 2 and is kept for historical compatibility. Modern systems may not ship Python 2 by default.
->
-> If you specifically want this legacy version, download it from the v4 release:
-> <https://github.com/reblox01/DarkFly-Tool/releases/tag/darkfly-v4.0.0>
+Do not use this project to gain unauthorized access, disrupt services, steal information, or violate applicable laws.
 
-### Information
+The project provides information and launcher functionality; users are responsible for how they use the tools and commands available through their configuration.
 
-DarkFly now is: <a href="https://github.com/Ranginang67/DarkFly-2019.1.git">DarkFly-2019.1</a> (generation of DarkFly-tool) Try it.
+License
 
-DarkFly-Tool is an installation tool for installing tools. this tool makes it easy for you. so you don't need to type git clone or look for the github repository. You only have to choose the number. which tool you want to install. there are 530 tools ready for intall. and for those of you who like to have fun. there are 7 SMS spam tools that are ready to use, you just need to choose spam to use the target number. there is a tocopedia DLL.
+This project is distributed under the GNU General Public License v3.0 or later.
 
-### Install (Termux)
+See ""LICENSE"" (LICENSE) for the full license text.
 
-**Termux:**
+Author
 
-* `pkg install python2`
-* `pkg install git`
-* `git clone https://github.com/reblox01/DarkFly-Tool`
-* `cd DarkFly-Tool`
-* `python2 install.py`
+KRISHAN SINGH SIDHU
 
-```bash
-1.if installed is complite, use command
-$cd
-2.then run it
-$DarkFly
-```
+GitHub:
 
-**NOTE:**
+https://github.com/kp13-cloud
 
-```bash
-if python2 install.py is not allowed or fail, Use this
-$chmod +x install.py
-$python2 install.py
-```
+Project:
 
-### How to update v4
-
-For update this tool, just do the reinstallation, the first way is to install the Darkfly tools, by reinstalling, the old file will be deleted and replaced with the new one installed.
-
-### Note
-
-The original DarkFly v4 installer was mainly tested on Termux. On regular Linux distributions it may not work correctly.
+https://github.com/kp13-cloud/X-TOOL-SIDHU
